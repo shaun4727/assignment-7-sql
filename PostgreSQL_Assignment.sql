@@ -65,14 +65,14 @@ select title from books where stock = 0;
 select * from books where price = (select MAX(price) from books);
 
 -- 3. find the total number of orders placed by each customer
-select "name", count(*) total_orders from orders o left join customers c on c.id = o.customer_id group by "name";
+select c."name", count(*) total_orders from orders o left join customers c on c.id = o.customer_id group by "name";
 
 
 -- 4. Calculate the total revenue generated from book sales
-select sum(price*quantity) total_revenue  from books b right join orders o on b.id = o.book_id;
+select sum(b.price*o.quantity) total_revenue  from books b right join orders o on b.id = o.book_id;
 
 -- 5. List all customers who have placed more than one order
-select "name",quantity as orders_count from orders o left join customers c on c.id = o.customer_id where quantity>1;
+select c."name",o.quantity as orders_count from orders o left join customers c on c.id = o.customer_id where quantity>1;
 
 
 -- 6. find the average price of books in the store
@@ -86,22 +86,3 @@ update books set price = price*1.1 where published_year < 2000;
 -- 8. Delete customers who haven't p   laced any orders
 delete from customers where id = (select c.id from orders o right join customers c 
 on c.id = o.customer_id where o.quantity is null);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
