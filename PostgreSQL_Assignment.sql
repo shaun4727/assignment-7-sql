@@ -72,7 +72,8 @@ select c."name", count(*) total_orders from orders o left join customers c on c.
 select sum(b.price*o.quantity) total_revenue  from books b right join orders o on b.id = o.book_id;
 
 -- 5. List all customers who have placed more than one order
-select c."name",o.quantity as orders_count from orders o left join customers c on c.id = o.customer_id where quantity>1;
+select c."name",o.quantity as orders_count from orders o left join customers c 
+    on c.id = o.customer_id where quantity>1;
 
 
 -- 6. find the average price of books in the store
@@ -84,5 +85,5 @@ update books set price = price*1.1 where published_year < 2000;
 
 
 -- 8. Delete customers who haven't p   laced any orders
-delete from customers where id = (select c.id from orders o right join customers c 
+delete from customers where id in (select c.id from orders o right join customers c 
 on c.id = o.customer_id where o.quantity is null);
